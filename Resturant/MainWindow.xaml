@@ -1,0 +1,38 @@
+﻿<Window x:Class="Restaurant.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="{Binding CurrentPage.Title, FallbackValue='Система управления рестораном'}" 
+        Height="700" Width="1000" WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource BackgroundBrush}"
+        Closing="Window_Closing">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Боковое меню (видимость зависит от роли) -->
+        <StackPanel Grid.Column="0" Background="#333" Margin="0">
+            <TextBlock Text="STTV Меню" Foreground="White" FontSize="20" FontWeight="Bold" Margin="10" HorizontalAlignment="Center"/>
+
+            <Button Content="Мои заказы" Command="{Binding GoToClientOrdersCommand}" Margin="10,20,10,5"/>
+            <Button Content="Меню блюд" Command="{Binding GoToDishesCommand}" Margin="10,5,10,5"/>
+
+            <!-- Кнопки для Админа (видимость по роли) -->
+            <Button Content="Все заказы" Command="{Binding GoToAdminOrdersCommand}" Margin="10,5,10,5" 
+                    Visibility="{Binding IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <Button Content="Управление блюдами" Command="{Binding GoToAdminDishesCommand}" Margin="10,5,10,5"
+                    Visibility="{Binding IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+            <Button Content="Пользователи" Command="{Binding GoToUsersCommand}" Margin="10,5,10,5"
+                    Visibility="{Binding IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+            <Button Content="Сменить тему" Command="{Binding ToggleThemeCommand}" Margin="10,20,10,5" Background="BlueViolet"/>
+            <Button Content="Выйти" Command="{Binding LogoutCommand}" Margin="10,5,10,5" Background="Plum"/>
+        </StackPanel>
+
+        <!-- Область контента (Страницы) -->
+        <Frame Grid.Column="1" x:Name="MainFrame" NavigationUIVisibility="Hidden" 
+               Source="{Binding CurrentPage}" Background="{DynamicResource BackgroundBrush}"/>
+    </Grid>
+</Window>
