@@ -1,4 +1,4 @@
-﻿using Resturant; // Ваше пространство имен (где лежит Model1.edmx)
+﻿using System;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -9,42 +9,50 @@ namespace Resturant.Services
     {
         public static Users CurrentUser { get; set; }
 
-        // Метод для создания хэша пароля (нужен будет при регистрации)
+        // 1. Отдельный метод хэширования
         public static string HashPassword(string password)
         {
             using (var sha256 = SHA256.Create())
             {
                 var bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
-                var builder = new StringBuilder();
-                foreach (var b in bytes)
-                {
-                    builder.Append(b.ToString("x2")); // Переводим в HEX-строку
-                }
-                return builder.ToString();
+                return string.Concat(bytes.Select(b => b.ToString("x2")));
             }
         }
 
-        public static bool Login(string login, string password)
+        // 2. Отдельный метод генерации капчи
+        public static string GenerateCaptcha()
         {
-            // Замените ResturantEntities на имя вашего класса контекста БД
+            Random rnd = new Random();
+            const string chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+            return new string(Enumerable.Repeat(chars, 5).Select(s => s[rnd.Next(s.Length)]).ToArray());
+        }
+
+        // 3. Отдельный метод аутентификации (и проверки попыток)
+        public static (bool Success, string Message, bool NeedCaptcha) Login(string login, string password, string enteredCaptcha, string actualCaptcha)
+        {
             using (var context = new RestaurantDBEntities())
             {
                 var user = context.Users.FirstOrDefault(u => u.Login == login);
+                if (user == null) return (false, "Пользователь не найден", false);
 
-                if (user == null)
-                    return false;
+                // Проверка на блокировку/капчу
+                if (user.FailedAttempts >= 3 && enteredCaptcha != actualCaptcha)
+                    return (false, "Неверная капча!", true);
 
-                // Получаем хэш от введенного пароля
-                string enteredHash = HashPassword(password);
-
-                // Сравниваем с тем, что лежит в БД
-                if (user.PasswordHash == enteredHash)
+                if (user.PasswordHash == HashPassword(password))
                 {
+                    user.FailedAttempts = 0; // Сброс попыток при успехе
+                    context.SaveChanges();
                     CurrentUser = user;
-                    return true;
+                    return (true, "Успех", false);
                 }
-
-                return false;
+                else
+                {
+                    user.FailedAttempts++;
+                    context.SaveChanges();
+                    bool needCaptcha = user.FailedAttempts >= 3;
+                    return (false, $"Неверный пароль. Осталось попыток: {3 - user.FailedAttempts}", needCaptcha);
+                }
             }
         }
     }

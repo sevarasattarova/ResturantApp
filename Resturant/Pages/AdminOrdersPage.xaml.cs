@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-
-// Для экспорта
 using Microsoft.Win32;
 using ClosedXML.Excel;
 using Xceed.Words.NET;
@@ -13,9 +11,9 @@ using QuestPDF.Fluent;
 using QuestPDF.Helpers;
 using QuestPDF.Infrastructure;
 
+
 namespace Resturant.Pages
 {
-    // Класс для отображения строки в таблице
     public class AdminOrderViewModel
     {
         public int OrderId { get; set; }
@@ -33,10 +31,11 @@ namespace Resturant.Pages
         public AdminOrdersPage()
         {
             InitializeComponent();
-            LoadData();
+
+            // Загружаем данные и строим график только после того, как страница отрисовалась
+            this.Loaded += (s, e) => LoadData();
         }
 
-        // --- ЗАГРУЗКА ДАННЫХ ИЗ БД ---
         private void LoadData()
         {
             using (var context = new RestaurantDBEntities())
@@ -70,14 +69,12 @@ namespace Resturant.Pages
 
         private void BtnRefresh_Click(object sender, RoutedEventArgs e) => LoadData();
 
-        // --- ПЕРЕСЧЕТ СУММЫ ПРИ ИЗМЕНЕНИИ КОЛИЧЕСТВА (ЭТОТ МЕТОД ЧИНИТ 1-Ю ОШИБКУ) ---
         private void OrdersGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             Dispatcher.BeginInvoke(new System.Action(() =>
             {
                 var row = e.Row.Item as AdminOrderViewModel;
                 if (row == null) return;
-
                 if (e.Column.Header.ToString() == "Кол-во")
                 {
                     row.ItemTotal = row.Price * row.Quantity;
@@ -86,11 +83,9 @@ namespace Resturant.Pages
             }), System.Windows.Threading.DispatcherPriority.Background);
         }
 
-        // --- СОХРАНЕНИЕ ИЗМЕНЕНИЙ (СТАТУС И КОЛ-ВО) ---
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
             OrdersGrid.CommitEdit(DataGridEditingUnit.Row, true);
-
             try
             {
                 using (var context = new RestaurantDBEntities())
@@ -100,6 +95,7 @@ namespace Resturant.Pages
                     {
                         var uniqueOrderIds = list.Select(x => x.OrderId).Distinct();
                         var allStatuses = context.OrderStatuses.ToList();
+                        bool isAdmin = Services.AuthService.CurrentUser.Role == "Администратор";
 
                         foreach (var orderId in uniqueOrderIds)
                         {
@@ -107,30 +103,27 @@ namespace Resturant.Pages
                             if (dbOrder != null)
                             {
                                 var row = list.First(x => x.OrderId == orderId);
-
                                 var statusObj = allStatuses.FirstOrDefault(s => s.Name.Trim().ToLower() == row.Status.Trim().ToLower());
                                 if (statusObj != null)
                                     dbOrder.StatusId = statusObj.StatusId;
-                                else
-                                {
-                                    MessageBox.Show($"Статус '{row.Status}' не найден в базе! Используйте: Новый, Готовится, Подан, Оплачен.", "Ошибка");
-                                    return;
-                                }
 
-                                dbOrder.TotalAmount = list.Where(x => x.OrderId == orderId).Sum(x => x.ItemTotal);
+                                if (isAdmin)
+                                    dbOrder.TotalAmount = list.Where(x => x.OrderId == orderId).Sum(x => x.ItemTotal);
                             }
                         }
 
-                        foreach (var item in list)
+                        if (isAdmin)
                         {
-                            var dish = context.Dishes.FirstOrDefault(d => d.Name == item.DishName);
-                            if (dish != null)
+                            foreach (var item in list)
                             {
-                                var dbItem = context.OrderItems.FirstOrDefault(oi => oi.OrderId == item.OrderId && oi.DishId == dish.DishId);
-                                if (dbItem != null) dbItem.Quantity = item.Quantity;
+                                var dish = context.Dishes.FirstOrDefault(d => d.Name == item.DishName);
+                                if (dish != null)
+                                {
+                                    var dbItem = context.OrderItems.FirstOrDefault(oi => oi.OrderId == item.OrderId && oi.DishId == dish.DishId);
+                                    if (dbItem != null) dbItem.Quantity = item.Quantity;
+                                }
                             }
                         }
-
                         context.SaveChanges();
                     }
                 }
@@ -144,32 +137,56 @@ namespace Resturant.Pages
             }
         }
 
-        // --- УДАЛЕНИЕ ЗАКАЗА ---
         private void BtnDelete_Click(object sender, RoutedEventArgs e)
         {
             var selected = OrdersGrid.SelectedItem as AdminOrderViewModel;
             if (selected == null) return;
 
-            if (MessageBox.Show($"Удалить заказ №{selected.OrderId} целиком?", "Подтверждение", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+            if (MessageBox.Show($"Удалить блюдо '{selected.DishName}' из заказа №{selected.OrderId}?", "Подтверждение", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
             {
-                using (var context = new RestaurantDBEntities())
+                try
                 {
-                    var order = context.Orders.Find(selected.OrderId);
-                    if (order != null)
+                    using (var context = new RestaurantDBEntities())
                     {
-                        context.Orders.Remove(order);
-                        context.SaveChanges();
+                        var dish = context.Dishes.FirstOrDefault(d => d.Name == selected.DishName);
+                        if (dish != null)
+                        {
+                            var orderItem = context.OrderItems.FirstOrDefault(oi => oi.OrderId == selected.OrderId && oi.DishId == dish.DishId);
+                            if (orderItem != null)
+                            {
+                                context.OrderItems.Remove(orderItem);
+                                context.SaveChanges();
+                            }
+                        }
+
+                        var remainingItems = context.OrderItems.Where(oi => oi.OrderId == selected.OrderId).ToList();
+                        if (remainingItems.Count == 0)
+                        {
+                            var emptyOrder = context.Orders.Find(selected.OrderId);
+                            if (emptyOrder != null)
+                            {
+                                context.Orders.Remove(emptyOrder);
+                                context.SaveChanges();
+                            }
+                        }
+                        else
+                        {
+                            var orderToUpdate = context.Orders.Find(selected.OrderId);
+                            if (orderToUpdate != null)
+                            {
+                                orderToUpdate.TotalAmount = remainingItems.Sum(oi => oi.Price * oi.Quantity);
+                                context.SaveChanges();
+                            }
+                        }
                     }
+                    LoadData();
                 }
-                LoadData();
+                catch (Exception ex) { MessageBox.Show("Ошибка при удалении: " + ex.Message); }
             }
         }
 
-        // =========================================================================
-        // ============================ ЭКСПОРТ ОТЧЕТОВ ============================
-        // =========================================================================
+        // ================= ЭКСПОРТ =================
 
-        // 1. ЭКСПОРТ В EXCEL (.xlsx)
         private void BtnExportExcel_Click(object sender, RoutedEventArgs e)
         {
             var sfd = new SaveFileDialog { Filter = "Excel Files|*.xlsx", FileName = "Отчет_Заказы.xlsx" };
@@ -180,35 +197,25 @@ namespace Resturant.Pages
                     using (var workbook = new XLWorkbook())
                     {
                         var ws = workbook.Worksheets.Add("Заказы");
-
-                        ws.Cell(1, 1).Value = "№ Заказа";
-                        ws.Cell(1, 2).Value = "Столик";
-                        ws.Cell(1, 3).Value = "Блюдо";
-                        ws.Cell(1, 4).Value = "Кол-во";
-                        ws.Cell(1, 5).Value = "Сумма";
-                        ws.Cell(1, 6).Value = "Статус";
+                        ws.Cell(1, 1).Value = "№ Заказа"; ws.Cell(1, 2).Value = "Столик"; ws.Cell(1, 3).Value = "Блюдо";
+                        ws.Cell(1, 4).Value = "Кол-во"; ws.Cell(1, 5).Value = "Сумма"; ws.Cell(1, 6).Value = "Статус";
 
                         var list = OrdersGrid.ItemsSource as List<AdminOrderViewModel>;
                         for (int i = 0; i < list.Count; i++)
                         {
-                            ws.Cell(i + 2, 1).Value = list[i].OrderId;
-                            ws.Cell(i + 2, 2).Value = list[i].TableNumber;
-                            ws.Cell(i + 2, 3).Value = list[i].DishName;
-                            ws.Cell(i + 2, 4).Value = list[i].Quantity;
-                            ws.Cell(i + 2, 5).Value = list[i].ItemTotal;
-                            ws.Cell(i + 2, 6).Value = list[i].Status;
+                            ws.Cell(i + 2, 1).Value = list[i].OrderId; ws.Cell(i + 2, 2).Value = list[i].TableNumber;
+                            ws.Cell(i + 2, 3).Value = list[i].DishName; ws.Cell(i + 2, 4).Value = list[i].Quantity;
+                            ws.Cell(i + 2, 5).Value = list[i].ItemTotal; ws.Cell(i + 2, 6).Value = list[i].Status;
                         }
-
                         ws.Columns().AdjustToContents();
                         workbook.SaveAs(sfd.FileName);
                     }
-                    MessageBox.Show("Отчет успешно экспортирован в Excel!", "Успех");
+                    MessageBox.Show("Успешно экспортировано в Excel!");
                 }
-                catch (Exception ex) { MessageBox.Show("Ошибка при экспорте: " + ex.Message); }
+                catch (Exception ex) { MessageBox.Show("Ошибка: " + ex.Message); }
             }
         }
 
-        // 2. ЭКСПОРТ В WORD (.docx)
         private void BtnExportWord_Click(object sender, RoutedEventArgs e)
         {
             var sfd = new SaveFileDialog { Filter = "Word Files|*.docx", FileName = "Отчет_Заказы.docx" };
@@ -218,15 +225,11 @@ namespace Resturant.Pages
                 {
                     using (var doc = DocX.Create(sfd.FileName))
                     {
-                        doc.InsertParagraph("Отчет по заказам ресторана").FontSize(20).Bold().Alignment = Alignment.center;
-                        doc.InsertParagraph($"Дата формирования: {DateTime.Now:g}\n").FontSize(12).Alignment = Alignment.center;
-
+                        doc.InsertParagraph("Отчет по заказам").FontSize(20).Bold().Alignment = Alignment.center;
                         var table = doc.AddTable(1, 5);
-                        table.Rows[0].Cells[0].Paragraphs.First().Append("№ Заказа").Bold();
-                        table.Rows[0].Cells[1].Paragraphs.First().Append("Столик").Bold();
-                        table.Rows[0].Cells[2].Paragraphs.First().Append("Блюдо").Bold();
-                        table.Rows[0].Cells[3].Paragraphs.First().Append("Кол-во").Bold();
-                        table.Rows[0].Cells[4].Paragraphs.First().Append("Сумма").Bold();
+                        table.Rows[0].Cells[0].Paragraphs.First().Append("№"); table.Rows[0].Cells[1].Paragraphs.First().Append("Столик");
+                        table.Rows[0].Cells[2].Paragraphs.First().Append("Блюдо"); table.Rows[0].Cells[3].Paragraphs.First().Append("Кол-во");
+                        table.Rows[0].Cells[4].Paragraphs.First().Append("Сумма");
 
                         var list = OrdersGrid.ItemsSource as List<AdminOrderViewModel>;
                         foreach (var item in list)
@@ -238,83 +241,55 @@ namespace Resturant.Pages
                             row.Cells[3].Paragraphs.First().Append(item.Quantity.ToString());
                             row.Cells[4].Paragraphs.First().Append(item.ItemTotal.ToString("N2") + " р.");
                         }
-
                         doc.InsertTable(table);
                         doc.Save();
                     }
-                    MessageBox.Show("Отчет успешно экспортирован в Word!", "Успех");
+                    MessageBox.Show("Успешно экспортировано в Word!");
                 }
-                catch (Exception ex) { MessageBox.Show("Ошибка при экспорте: " + ex.Message); }
+                catch (Exception ex) { MessageBox.Show("Ошибка: " + ex.Message); }
             }
         }
 
-        // 3. ЭКСПОРТ В PDF (.pdf)
         private void BtnExportPdf_Click(object sender, RoutedEventArgs e)
         {
             QuestPDF.Settings.License = LicenseType.Community;
-
             var sfd = new SaveFileDialog { Filter = "PDF Files|*.pdf", FileName = "Отчет_Заказы.pdf" };
             if (sfd.ShowDialog() == true)
             {
                 try
                 {
                     var list = OrdersGrid.ItemsSource as List<AdminOrderViewModel>;
-
-                    // ИСПРАВЛЕНИЕ 2-й ОШИБКИ: Добавляем QuestPDF.Fluent. перед Document
                     QuestPDF.Fluent.Document.Create(container =>
                     {
                         container.Page(page =>
                         {
                             page.Size(PageSizes.A4);
                             page.Margin(2, QuestPDF.Infrastructure.Unit.Centimetre);
-                            page.PageColor(Colors.White);
-                            page.DefaultTextStyle(x => x.FontSize(12));
-
-                            page.Header().Text("Отчет по заказам ресторана")
-                                .SemiBold().FontSize(20).FontColor(Colors.Blue.Darken2);
-
-                            page.Content().PaddingVertical(15).Table(table =>
+                            page.Header().Text("Отчет по заказам").SemiBold().FontSize(20);
+                            page.Content().Table(table =>
                             {
                                 table.ColumnsDefinition(columns =>
                                 {
-                                    columns.ConstantColumn(60);
-                                    columns.ConstantColumn(60);
-                                    columns.RelativeColumn();
-                                    columns.ConstantColumn(60);
-                                    columns.ConstantColumn(80);
+                                    columns.ConstantColumn(50); columns.ConstantColumn(50); columns.RelativeColumn();
+                                    columns.ConstantColumn(50); columns.ConstantColumn(80);
                                 });
-
                                 table.Header(header =>
                                 {
-                                    header.Cell().Background(Colors.Grey.Lighten2).Padding(5).Text("№").Bold();
-                                    header.Cell().Background(Colors.Grey.Lighten2).Padding(5).Text("Столик").Bold();
-                                    header.Cell().Background(Colors.Grey.Lighten2).Padding(5).Text("Блюдо").Bold();
-                                    header.Cell().Background(Colors.Grey.Lighten2).Padding(5).Text("Кол-во").Bold();
-                                    header.Cell().Background(Colors.Grey.Lighten2).Padding(5).Text("Сумма").Bold();
+                                    header.Cell().Text("№").Bold(); header.Cell().Text("Столик").Bold();
+                                    header.Cell().Text("Блюдо").Bold(); header.Cell().Text("Кол-во").Bold(); header.Cell().Text("Сумма").Bold();
                                 });
-
                                 foreach (var item in list)
                                 {
-                                    table.Cell().BorderBottom(1).BorderColor(Colors.Grey.Lighten3).Padding(5).Text(item.OrderId.ToString());
-                                    table.Cell().BorderBottom(1).BorderColor(Colors.Grey.Lighten3).Padding(5).Text(item.TableNumber);
-                                    table.Cell().BorderBottom(1).BorderColor(Colors.Grey.Lighten3).Padding(5).Text(item.DishName);
-                                    table.Cell().BorderBottom(1).BorderColor(Colors.Grey.Lighten3).Padding(5).Text(item.Quantity.ToString());
-                                    table.Cell().BorderBottom(1).BorderColor(Colors.Grey.Lighten3).Padding(5).Text(item.ItemTotal.ToString("N2") + " р.");
+                                    table.Cell().Text(item.OrderId.ToString()); table.Cell().Text(item.TableNumber);
+                                    table.Cell().Text(item.DishName); table.Cell().Text(item.Quantity.ToString());
+                                    table.Cell().Text(item.ItemTotal.ToString("N2") + " р.");
                                 }
-                            });
-
-                            page.Footer().AlignCenter().Text(x =>
-                            {
-                                x.CurrentPageNumber();
-                                x.Span(" из ");
-                                x.TotalPages();
                             });
                         });
                     }).GeneratePdf(sfd.FileName);
-
-                    MessageBox.Show("Отчет успешно экспортирован в PDF!", "Успех");
+                    MessageBox.Show("Успешно экспортировано в PDF!");
                 }
-                catch (Exception ex) { MessageBox.Show("Ошибка при экспорте: " + ex.Message); }
+                catch (Exception ex) { MessageBox.Show("Ошибка: " + ex.Message); }
             }
         }
     }

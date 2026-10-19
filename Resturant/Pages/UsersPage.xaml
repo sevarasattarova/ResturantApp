@@ -21,16 +21,16 @@
         <DataGrid Grid.Row="2" x:Name="UsersGrid" AutoGenerateColumns="False" IsReadOnly="False" 
                   CanUserAddRows="False" Background="White" AlternatingRowBackground="#F9F9F9">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding UserId}" IsReadOnly="True" Width="50"/>
+                <DataGridTextColumn Header="№" Binding="{Binding UserId}" IsReadOnly="True" Width="50"/>
                 <DataGridTextColumn Header="ФИО" Binding="{Binding FullName}" Width="200"/>
                 <DataGridTextColumn Header="Логин" Binding="{Binding Login}" Width="120"/>
                 <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}" Width="150"/>
                 <DataGridComboBoxColumn Header="Роль" SelectedItemBinding="{Binding Role}" Width="120">
                     <DataGridComboBoxColumn.ItemsSource>
                         <x:Array Type="sys:String" xmlns:sys="clr-namespace:System;assembly=mscorlib">
-                            <sys:String>Официант</sys:String>
+                            <sys:String>Клиент</sys:String>
+                            <sys:String>Работник</sys:String>
                             <sys:String>Администратор</sys:String>
-                            <sys:String>Повар</sys:String>
                         </x:Array>
                     </DataGridComboBoxColumn.ItemsSource>
                 </DataGridComboBoxColumn>

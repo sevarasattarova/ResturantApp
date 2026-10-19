@@ -1,3 +1,9 @@
 <Solution>
-  <Project Path="Resturant/Resturant.csproj" />
+  <Folder Name="/db/">
+    <File Path="../../../Documents/shema.sql" />
+  </Folder>
+  <Folder Name="/res/">
+    <File Path="../../../Downloads/5d20a4274f4d616bc781399d.jpg" />
+  </Folder>
+  <Project Path="Resturant/Resturant.csproj" Id="757f52d8-04d4-4e09-8990-66717b21b702" />
 </Solution>

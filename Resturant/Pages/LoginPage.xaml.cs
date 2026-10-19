@@ -1,8 +1,8 @@
-﻿using Resturant.Services;
-using System;
+﻿using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Resturant.Pages
 {
@@ -34,41 +34,54 @@ namespace Resturant.Pages
                 return;
             }
 
-            if (AuthService.Login(login, password))
+            // Вызов метода авторизации
+            var result = Services.AuthService.Login(login, password, TxtCaptchaInput.Text, _currentCaptcha);
+
+            if (result.Success)
             {
-                // Если вход успешен - переходим в главное меню
-                if (Application.Current.MainWindow is MainWindow mainWin)
+                ApplySavedTheme();
+
+                if (Window.GetWindow(this) is MainWindow mainWin)
                 {
-                    mainWin.DataContext = new Resturant.ViewModels.MainViewModel(); // Обновляем VM, чтобы IsLoggedIn стало true
-                    mainWin.MainFrame.Navigate(new ClientOrdersPage()); // Открываем стартовую страницу
+                    mainWin.DataContext = new Resturant.ViewModels.MainViewModel();
                 }
             }
             else
             {
                 _failedAttempts++;
-                TxtError.Text = $"Неверный логин или пароль. Попытка {_failedAttempts}.";
+                TxtError.Text = result.Message;
 
-                if (_failedAttempts >= 3)
+                if (result.NeedCaptcha)
                 {
                     CaptchaPanel.Visibility = Visibility.Visible;
                     GenerateNewCaptcha();
-                    TxtError.Text = "Слишком много попыток! Введите капчу.";
                 }
             }
         }
 
         private void GenerateNewCaptcha()
         {
-            Random rnd = new Random();
-            const string chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-            _currentCaptcha = new string(Enumerable.Repeat(chars, 5).Select(s => s[rnd.Next(s.Length)]).ToArray());
+            _currentCaptcha = Services.AuthService.GenerateCaptcha();
             TxtCaptchaCode.Text = _currentCaptcha;
             TxtCaptchaInput.Clear();
         }
 
+        private void ApplySavedTheme()
+        {
+            if (Services.AuthService.CurrentUser != null && Services.AuthService.CurrentUser.AppTheme == "Dark")
+            {
+                Application.Current.Resources["BackgroundBrush"] = new SolidColorBrush(Color.FromRgb(45, 45, 48));
+                Application.Current.Resources["ForegroundBrush"] = new SolidColorBrush(Colors.White);
+            }
+            else
+            {
+                Application.Current.Resources["BackgroundBrush"] = new SolidColorBrush(Color.FromRgb(240, 240, 240));
+                Application.Current.Resources["ForegroundBrush"] = new SolidColorBrush(Color.FromRgb(51, 51, 51));
+            }
+        }
+
         private void BtnGoToRegister_Click(object sender, RoutedEventArgs e)
         {
-            // Навигация на страницу регистрации
             NavigationService.Navigate(new RegisterPage());
         }
     }

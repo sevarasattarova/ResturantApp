@@ -1,5 +1,4 @@
 ﻿using Resturant.Services;
-using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,11 +16,12 @@ namespace Resturant.Pages
         {
             var fullName = TxtFullName.Text.Trim();
             var login = TxtLogin.Text.Trim();
-            var phone = TxtPhone.Text.Trim();
+            // ВНИМАНИЕ: Убедитесь, что в XAML у вас есть TextBox с именем TxtPhone!
+            // Если он называется иначе (например, TxtPhoneNumber), поменяйте здесь.
+            var phone = TxtPhone != null ? TxtPhone.Text.Trim() : "";
             var password = TxtPassword.Password;
             var confirmPassword = TxtPasswordConfirm.Password;
 
-            // Валидация
             if (string.IsNullOrWhiteSpace(fullName) || string.IsNullOrWhiteSpace(login) || string.IsNullOrWhiteSpace(password))
             {
                 TxtError.Text = "Заполните обязательные поля!";
@@ -43,7 +43,7 @@ namespace Resturant.Pages
                 return;
             }
 
-            using (var context = new RestaurantDBEntities()) // Ваш контекст БД
+            using (var context = new RestaurantDBEntities())
             {
                 if (context.Users.Any(u => u.Login == login))
                 {
@@ -56,11 +56,11 @@ namespace Resturant.Pages
                     Login = login,
                     FullName = fullName,
                     Phone = phone,
-                    Role = "Работник",
+                    Role = "Работник", // По умолчанию
                     PasswordHash = AuthService.HashPassword(password),
                     FailedAttempts = 0,
                     AppTheme = "Light",
-                    CreatedAt = DateTime.Now
+                    CreatedAt = System.DateTime.Now // Обязательно!
                 };
 
                 context.Users.Add(newUser);
@@ -68,8 +68,6 @@ namespace Resturant.Pages
             }
 
             MessageBox.Show("Регистрация прошла успешно!", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
-
-            // Возвращаемся на страницу входа
             NavigationService.Navigate(new LoginPage());
         }
 

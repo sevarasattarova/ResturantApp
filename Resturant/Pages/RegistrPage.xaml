@@ -15,7 +15,7 @@
             <TextBox x:Name="TxtLogin" Height="35" Padding="5"/>
 
             <TextBlock Text="Телефон (+7XXXXXXXXXX):" Foreground="{DynamicResource ForegroundBrush}" Margin="0,5,0,5"/>
-            <TextBox x:Name="TxtPhone" Height="35" Padding="5" MaxLength="12"/>
+            <TextBox x:Name="TxtPhone" Height="35" Padding="5" MaxLength="12" ToolTip="Формат: +7XXXXXXXXXX"/>
 
             <TextBlock Text="Пароль (мин. 6 символов):" Foreground="{DynamicResource ForegroundBrush}" Margin="0,5,0,5"/>
             <PasswordBox x:Name="TxtPassword" Height="35" Padding="5"/>
