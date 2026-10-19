@@ -17,7 +17,7 @@ namespace Resturant
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Dishes()
         {
-            this.Orders = new HashSet<Orders>();
+            this.OrderItems = new HashSet<OrderItems>();
         }
     
         public int DishId { get; set; }
@@ -28,6 +28,6 @@ namespace Resturant
         public bool IsAvailable { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Orders> Orders { get; set; }
+        public virtual ICollection<OrderItems> OrderItems { get; set; }
     }
 }

@@ -14,15 +14,24 @@ namespace Resturant
     
     public partial class Orders
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Orders()
+        {
+            this.OrderItems = new HashSet<OrderItems>();
+        }
+    
         public int OrderId { get; set; }
         public int UserId { get; set; }
-        public int DishId { get; set; }
         public int Quantity { get; set; }
         public decimal TotalAmount { get; set; }
         public System.DateTime OrderDate { get; set; }
-        public string Status { get; set; }
+        public Nullable<int> TableId { get; set; }
+        public int StatusId { get; set; }
     
-        public virtual Dishes Dishes { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OrderItems> OrderItems { get; set; }
+        public virtual OrderStatuses OrderStatuses { get; set; }
+        public virtual Tables Tables { get; set; }
         public virtual Users Users { get; set; }
     }
 }

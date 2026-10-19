@@ -1,0 +1,80 @@
+﻿<Page x:Class="Resturant.Pages.DishesPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Меню ресторана" Background="{DynamicResource BackgroundBrush}">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <!-- 0. Заголовок "Наше меню" -->
+            <RowDefinition Height="Auto"/>
+            <!-- 1. ПАНЕЛЬ ПОИСКА И ФИЛЬТРАЦИИ (новая) -->
+            <RowDefinition Height="*"/>
+            <!-- 2. Таблица с блюдами (растягивается) -->
+            <RowDefinition Height="Auto"/>
+            <!-- 3. Панель "Добавить в корзину" -->
+            <RowDefinition Height="200"/>
+            <!-- 4. Корзина -->
+        </Grid.RowDefinitions>
+
+        <!-- ... дальше идут элементы, у которых нужно проверить Grid.Row ... -->
+
+        <TextBlock Grid.Row="0" Text="Наше меню" FontSize="24" FontWeight="Bold" 
+                   Foreground="{DynamicResource ForegroundBrush}" Margin="0,0,0,15"/>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
+            <TextBlock Text="Поиск:" VerticalAlignment="Center" Foreground="{DynamicResource ForegroundBrush}" Margin="0,0,5,0"/>
+            <TextBox x:Name="TxtSearch" Width="200" Height="30" TextChanged="TxtSearch_TextChanged" ToolTip="Введите название блюда"/>
+
+            <TextBlock Text="Категория:" VerticalAlignment="Center" Foreground="{DynamicResource ForegroundBrush}" Margin="20,0,5,0"/>
+            <ComboBox x:Name="CmbCategory" Width="150" Height="30" SelectionChanged="CmbCategory_SelectionChanged"/>
+        </StackPanel>
+        <!-- Таблица блюд -->
+        <DataGrid Grid.Row="2" x:Name="DishesGrid" AutoGenerateColumns="False" IsReadOnly="True" 
+                  CanUserAddRows="False" Background="White" SelectionMode="Single">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="№" Binding="{Binding DishId}" Width="50"/>
+                <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="200"/>
+                <DataGridTextColumn Header="Категория" Binding="{Binding Category}" Width="120"/>
+                <DataGridTextColumn Header="Цена" Binding="{Binding Price, StringFormat={}{0:N2} р.}" Width="100"/>
+                <DataGridTextColumn Header="Описание" Binding="{Binding Description}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Панель добавления в корзину -->
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,15,0,10">
+            <TextBlock Text="Количество:" VerticalAlignment="Center" Foreground="{DynamicResource ForegroundBrush}" Margin="0,0,10,0"/>
+            <TextBox x:Name="TxtQuantity" Width="50" Height="30" Text="1" TextAlignment="Center" VerticalContentAlignment="Center"/>
+            <Button Content="Добавить в корзину" Click="BtnAddToCart_Click" Background="#F0AD4E" Width="150" Height="35" Margin="15,0,0,0"/>
+        </StackPanel>
+
+        <!-- Корзина -->
+        <GroupBox Grid.Row="4" Header="Ваш заказ (Корзина)" Foreground="{DynamicResource ForegroundBrush}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="220"/>
+                </Grid.ColumnDefinitions>
+
+                <DataGrid Grid.Column="0" x:Name="CartGrid" AutoGenerateColumns="False" IsReadOnly="True" 
+                          CanUserAddRows="False" Background="White">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Блюдо" Binding="{Binding DishName}" Width="*"/>
+                        <DataGridTextColumn Header="Кол-во" Binding="{Binding Quantity}" Width="70"/>
+                        <DataGridTextColumn Header="Сумма" Binding="{Binding Total, StringFormat={}{0:N2} р.}" Width="100"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <!-- Итоговая сумма и кнопка оформления -->
+                <StackPanel Grid.Column="1" Margin="15,0,0,0" VerticalAlignment="Center">
+                    <TextBlock Text="Выберите столик:" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource ForegroundBrush}"/>
+                    <!-- Выпадающий список столиков -->
+                    <ComboBox x:Name="CmbTables" Width="180" Height="30" Margin="0,5,0,15" DisplayMemberPath="TableNumber"/>
+
+                    <TextBlock Text="Итого к оплате:" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource ForegroundBrush}"/>
+                    <TextBlock x:Name="TxtTotalSum" Text="0.00 р." FontSize="24" FontWeight="Bold" Foreground="Green" Margin="0,5,0,15"/>
+                    <Button Content="Оформить заказ" Click="BtnCheckout_Click" Background="#5CB85C" Width="180" Height="45" FontSize="16"/>
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+    </Grid>
+</Page>

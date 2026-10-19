@@ -26,8 +26,11 @@ namespace Resturant
         }
     
         public virtual DbSet<Dishes> Dishes { get; set; }
+        public virtual DbSet<OrderItems> OrderItems { get; set; }
         public virtual DbSet<Orders> Orders { get; set; }
+        public virtual DbSet<OrderStatuses> OrderStatuses { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
+        public virtual DbSet<Tables> Tables { get; set; }
         public virtual DbSet<Users> Users { get; set; }
     }
 }

@@ -1,0 +1,52 @@
+﻿<Page x:Class="Resturant.Pages.AdminOrdersPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Title="Все заказы" Background="{DynamicResource BackgroundBrush}">
+
+    <Grid Margin="20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Заголовок страницы -->
+        <TextBlock Grid.Row="0" Text="Все заказы ресторана" FontSize="24" FontWeight="Bold" 
+                   Foreground="{DynamicResource ForegroundBrush}" Margin="0,0,0,15"/>
+
+        <!-- Панель с кнопками управления -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,15">
+            <!-- Кнопки работы с БД -->
+            <Button Content="Удалить заказ" Click="BtnDelete_Click" Background="#D9534F" Width="120" Height="35"/>
+            <Button Content="Сохранить" Click="BtnSave_Click" Background="#0275D8" Width="100" Height="35" Margin="10,0,0,0"/>
+            <Button Content="Обновить" Click="BtnRefresh_Click" Background="#5BC0DE" Width="100" Height="35" Margin="10,0,20,0"/>
+
+            <!-- Кнопки экспорта -->
+            <Button Content="В Excel" Click="BtnExportExcel_Click" Background="#217346" Width="100" Height="35" ToolTip="Экспорт текущего списка в .xlsx"/>
+            <Button Content="В Word" Click="BtnExportWord_Click" Background="#2B579A" Width="100" Height="35" Margin="10,0" ToolTip="Экспорт текущего списка в .docx"/>
+            <Button Content="В PDF" Click="BtnExportPdf_Click" Background="#D9534F" Width="100" Height="35" ToolTip="Экспорт текущего списка в .pdf"/>
+        </StackPanel>
+
+        <!-- Таблица заказов -->
+        <DataGrid Grid.Row="2" x:Name="OrdersGrid" AutoGenerateColumns="False" IsReadOnly="False" 
+                  CanUserAddRows="False" Background="White" AlternatingRowBackground="#F9F9F9"
+                  CellEditEnding="OrdersGrid_CellEditEnding">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="№ Заказа" Binding="{Binding OrderId}" IsReadOnly="True" Width="70"/>
+                <DataGridTextColumn Header="Столик" Binding="{Binding TableNumber}" IsReadOnly="True" Width="70"/>
+                <DataGridTextColumn Header="Блюдо" Binding="{Binding DishName}" IsReadOnly="True" Width="150"/>
+
+                <!-- Кол-во разрешено редактировать (для пересчета суммы) -->
+                <DataGridTextColumn Header="Кол-во" Binding="{Binding Quantity}" Width="60"/>
+
+                <!-- Сумма пересчитывается автоматически при изменении Кол-ва, редактировать вручную нельзя -->
+                <DataGridTextColumn Header="Сумма" Binding="{Binding ItemTotal, StringFormat={}{0:N2} р.}" IsReadOnly="True" Width="100"/>
+
+                <!-- Статус разрешено редактировать (текстом) -->
+                <DataGridTextColumn Header="Статус" Binding="{Binding Status}" Width="120"/>
+
+                <DataGridTextColumn Header="Дата" Binding="{Binding OrderDate, StringFormat={}{0:g}}" IsReadOnly="True" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Page>
