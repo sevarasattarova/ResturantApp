@@ -33,7 +33,7 @@
         <StackPanel Grid.Row="3" Orientation="Horizontal" Margin="0,15,0,10">
             <TextBlock Text="Количество:" VerticalAlignment="Center" Foreground="{DynamicResource ForegroundBrush}" Margin="0,0,10,0"/>
             <TextBox x:Name="TxtQuantity" Width="50" Height="30" Text="1" TextAlignment="Center"/>
-            <Button Content="Добавить в корзину" Click="BtnAddToCart_Click" Background="#F0AD4E" Width="150" Height="35" Margin="15,0,0,0"/>
+            <Button Content="Добавить в корзину" Click="BtnAddToCart_Click" Background="{DynamicResource DarkGreenBrush}" Width="150" Height="35" Margin="15,0,0,0"/>
         </StackPanel>
 
         <GroupBox Grid.Row="4" Header="Ваш заказ (Корзина)" Foreground="{DynamicResource ForegroundBrush}">
@@ -57,7 +57,7 @@
 
                     <TextBlock Text="Итого к оплате:" FontSize="14" FontWeight="Bold" Foreground="{DynamicResource ForegroundBrush}"/>
                     <TextBlock x:Name="TxtTotalSum" Text="0.00 р." FontSize="24" FontWeight="Bold" Foreground="Green" Margin="0,5,0,15"/>
-                    <Button Content="Оформить заказ" Click="BtnCheckout_Click" Background="#5CB85C" Width="180" Height="45" FontSize="16"/>
+                    <Button Content="Оформить заказ" Click="BtnCheckout_Click" Background="{DynamicResource SuccessBrush}" Width="180" Height="45" FontSize="16"/>
                 </StackPanel>
             </Grid>
         </GroupBox>

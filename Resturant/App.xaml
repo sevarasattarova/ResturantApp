@@ -3,33 +3,55 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+        <ResourceDictionary>
 
-        <!-- 1. ОБЪЯВЛЯЕМ РЕСУРСЫ ДЛЯ СВЕТЛОЙ ТЕМЫ -->
-        <SolidColorBrush x:Key="BackgroundBrush" Color="#F0F0F0"/>
-        <SolidColorBrush x:Key="ForegroundBrush" Color="#333333"/>
-        <SolidColorBrush x:Key="ButtonBrush" Color="#0078D7"/>
+            <FontFamily x:Key="MainFont">pack://application:,,,/res/Fonts/#Open Sans</FontFamily>
+            <SolidColorBrush x:Key="MainBgBrush" Color="#F3F3F3"/>
+            <SolidColorBrush x:Key="MainTextBrush" Color="#193D57"/>
+            <SolidColorBrush x:Key="MainTealBrush" Color="#0198AF"/>
+            <SolidColorBrush x:Key="DarkBlueBrush" Color="#233E76"/>
 
-        <!-- 2. ОБЪЯВЛЯЕМ СТИЛИ (единый шрифт, высота кнопок) -->
-        <Style TargetType="Button">
-            <Setter Property="Background" Value="{DynamicResource ButtonBrush}"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="Height" Value="35"/>
-            <Setter Property="Width" Value="120"/>
-            <Setter Property="FontSize" Value="14"/>
-        </Style>
+            <SolidColorBrush x:Key="DangerBrush" Color="#DD4B42"/>
+            <SolidColorBrush x:Key="SuccessBrush" Color="#4DCC5C"/>
+            <SolidColorBrush x:Key="BlueBrush" Color="#275E9F"/>
+            <SolidColorBrush x:Key="DarkGreenBrush" Color="#256569"/>
+            <SolidColorBrush x:Key="GrayBrush" Color="#9197A3"/>
 
-        <Style TargetType="TextBlock">
-            <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
-            <Setter Property="FontSize" Value="14"/>
-        </Style>
-        <Style TargetType="TextBox">
-            <Setter Property="Height" Value="30"/>
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="FontSize" Value="14"/>
-        </Style>
 
-        <!-- 3. КОНВЕРТЕР ДЛЯ ВИДИМОСТИ -->
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
 
+
+
+            <SolidColorBrush x:Key="BackgroundBrush" Color="#F3F3F3"/>
+
+            <SolidColorBrush x:Key="ForegroundBrush" Color="#193D57"/>
+
+            <SolidColorBrush x:Key="ButtonBrush" Color="#0198AF"/>
+
+            <SolidColorBrush x:Key="ButtonTextBrush" Color="#FFFFFF"/>
+
+
+
+            <Style TargetType="Button">
+                <Setter Property="Background" Value="{DynamicResource ButtonBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource ButtonTextBrush}"/>
+                <Setter Property="FontFamily" Value="{StaticResource MainFont}"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="Height" Value="35"/>
+                <Setter Property="Margin" Value="0,0,10,0"/>
+                <Setter Property="Cursor" Value="Hand"/>
+            </Style>
+
+            <Style TargetType="TextBlock">
+                <Setter Property="FontFamily" Value="{StaticResource MainFont}"/>
+                <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
+            </Style>
+            <Style TargetType="TextBox">
+                <Setter Property="FontFamily" Value="{StaticResource MainFont}"/>
+                <Setter Property="Height" Value="30"/>
+                <Setter Property="Margin" Value="0,5,0,10"/>
+            </Style>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

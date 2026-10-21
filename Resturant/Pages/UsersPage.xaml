@@ -12,10 +12,10 @@
         <TextBlock Text="Пользователи системы" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource ForegroundBrush}" Margin="0,0,0,15"/>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
-            <Button Content="Добавить" Click="BtnAdd_Click" Background="#5CB85C" Width="100"/>
-            <Button Content="Сохранить изменения" Click="BtnSave_Click" Background="#0275D8" Width="150" Margin="10,0"/>
-            <Button Content="Удалить" Click="BtnDelete_Click" Background="#D9534F" Width="100"/>
-            <Button Content="Обновить" Click="BtnRefresh_Click" Background="#5BC0DE" Width="100" Margin="10,0,0,0"/>
+            <Button Content="Добавить" Click="BtnAdd_Click" Background="{DynamicResource SuccessBrush}" Width="100"/>
+            <Button Content="Сохранить изменения" Click="BtnSave_Click"  Width="150" Margin="10,0"/>
+            <Button Content="Удалить" Click="BtnDelete_Click" Background="{DynamicResource DangerBrush}" Width="100"/>
+            <Button Content="Обновить" Click="BtnRefresh_Click"  Width="100" Margin="10,0,0,0"/>
         </StackPanel>
 
         <DataGrid Grid.Row="2" x:Name="UsersGrid" AutoGenerateColumns="False" IsReadOnly="False" 

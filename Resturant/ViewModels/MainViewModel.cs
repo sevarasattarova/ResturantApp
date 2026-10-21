@@ -46,9 +46,9 @@ namespace Resturant.ViewModels
                 var currentBg = Application.Current.Resources["BackgroundBrush"] as SolidColorBrush;
 
                 //если сейчас светлая тема - включаем темную
-                if (currentBg != null && currentBg.Color == (Color)ColorConverter.ConvertFromString("#F0F0F0"))
+                if (currentBg != null && currentBg.Color == (Color)ColorConverter.ConvertFromString("#F3F3F3"))
                 {
-                    Application.Current.Resources["BackgroundBrush"] = new SolidColorBrush(Color.FromRgb(45, 45, 48));
+                    Application.Current.Resources["BackgroundBrush"] = new SolidColorBrush(Color.FromRgb(25, 61, 87)); // #193D57
                     Application.Current.Resources["ForegroundBrush"] = new SolidColorBrush(Colors.White);
 
                     if (AuthService.CurrentUser != null)
@@ -64,8 +64,8 @@ namespace Resturant.ViewModels
                 }
                 else //если темная - включаем светлую
                 {
-                    Application.Current.Resources["BackgroundBrush"] = new SolidColorBrush(Color.FromRgb(240, 240, 240));
-                    Application.Current.Resources["ForegroundBrush"] = new SolidColorBrush(Color.FromRgb(51, 51, 51));
+                    Application.Current.Resources["BackgroundBrush"] = new SolidColorBrush(Color.FromRgb(243, 243, 243)); // #F3F3F3
+                    Application.Current.Resources["ForegroundBrush"] = new SolidColorBrush(Color.FromRgb(25, 61, 87)); // #193D57
 
                     if (AuthService.CurrentUser != null)
                     {

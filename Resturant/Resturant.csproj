@@ -300,6 +300,42 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <Resource Include="res\Fonts\OpenSans-Bold.ttf" />
+    <Resource Include="res\Fonts\OpenSans-BoldItalic.ttf" />
+    <Resource Include="res\Fonts\OpenSans-ExtraBold.ttf" />
+    <Resource Include="res\Fonts\OpenSans-ExtraBoldItalic.ttf" />
+    <Resource Include="res\Fonts\OpenSans-Italic.ttf" />
+    <Resource Include="res\Fonts\OpenSans-Light.ttf" />
+    <Resource Include="res\Fonts\OpenSans-LightItalic.ttf" />
+    <Resource Include="res\Fonts\OpenSans-Medium.ttf" />
+    <Resource Include="res\Fonts\OpenSans-MediumItalic.ttf" />
+    <Resource Include="res\Fonts\OpenSans-Regular.ttf" />
+    <Resource Include="res\Fonts\OpenSans-SemiBold.ttf" />
+    <Resource Include="res\Fonts\OpenSans-SemiBoldItalic.ttf" />
+    <Resource Include="res\Fonts\OpenSans_Condensed-Bold.ttf" />
+    <Resource Include="res\Fonts\OpenSans_Condensed-BoldItalic.ttf" />
+    <Resource Include="res\Fonts\OpenSans_Condensed-ExtraBold.ttf" />
+    <Resource Include="res\Fonts\OpenSans_Condensed-ExtraBoldItalic.ttf" />
+    <Resource Include="res\Fonts\OpenSans_Condensed-Italic.ttf" />
+    <Resource Include="res\Fonts\OpenSans_Condensed-Light.ttf" />
+    <Resource Include="res\Fonts\OpenSans_Condensed-LightItalic.ttf" />
+    <Resource Include="res\Fonts\OpenSans_Condensed-Medium.ttf" />
+    <Resource Include="res\Fonts\OpenSans_Condensed-MediumItalic.ttf" />
+    <Resource Include="res\Fonts\OpenSans_Condensed-Regular.ttf" />
+    <Resource Include="res\Fonts\OpenSans_Condensed-SemiBold.ttf" />
+    <Resource Include="res\Fonts\OpenSans_Condensed-SemiBoldItalic.ttf" />
+    <Resource Include="res\Fonts\OpenSans_SemiCondensed-Bold.ttf" />
+    <Resource Include="res\Fonts\OpenSans_SemiCondensed-BoldItalic.ttf" />
+    <Resource Include="res\Fonts\OpenSans_SemiCondensed-ExtraBold.ttf" />
+    <Resource Include="res\Fonts\OpenSans_SemiCondensed-ExtraBoldItalic.ttf" />
+    <Resource Include="res\Fonts\OpenSans_SemiCondensed-Italic.ttf" />
+    <Resource Include="res\Fonts\OpenSans_SemiCondensed-Light.ttf" />
+    <Resource Include="res\Fonts\OpenSans_SemiCondensed-LightItalic.ttf" />
+    <Resource Include="res\Fonts\OpenSans_SemiCondensed-Medium.ttf" />
+    <Resource Include="res\Fonts\OpenSans_SemiCondensed-MediumItalic.ttf" />
+    <Resource Include="res\Fonts\OpenSans_SemiCondensed-Regular.ttf" />
+    <Resource Include="res\Fonts\OpenSans_SemiCondensed-SemiBold.ttf" />
+    <Resource Include="res\Fonts\OpenSans_SemiCondensed-SemiBoldItalic.ttf" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -321,6 +357,7 @@
     </Content>
     <Resource Include="res\Логотип.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

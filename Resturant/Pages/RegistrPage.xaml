@@ -27,7 +27,7 @@
             <Button Content="Назад к входу" Click="BtnBackToLogin_Click" Width="200" Height="40" 
                     Background="Transparent" Foreground="{DynamicResource ForegroundBrush}" BorderBrush="Gray"/>
 
-            <TextBlock x:Name="TxtError" Foreground="Red" HorizontalAlignment="Center" Margin="0,15,0,0" 
+            <TextBlock x:Name="TxtError" Foreground="{DynamicResource DangerBrush}" HorizontalAlignment="Center" Margin="0,15,0,0" 
                        TextWrapping="Wrap" TextAlignment="Center"/>
         </StackPanel>
     </Grid>

@@ -12,9 +12,9 @@
         <TextBlock Text="Редактирование меню" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource ForegroundBrush}" Margin="0,0,0,15"/>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
-            <Button Content="Добавить блюдо" Click="BtnAdd_Click" Background="#5CB85C" Width="130"/>
+            <Button Content="Добавить блюдо" Click="BtnAdd_Click" Background="{DynamicResource SuccessBrush}" Width="130"/>
             <Button Content="Сохранить изменения" Click="BtnSave_Click" Background="#0275D8" Width="150" Margin="10,0"/>
-            <Button Content="Удалить" Click="BtnDelete_Click" Background="#D9534F" Width="100"/>
+            <Button Content="Удалить" Click="BtnDelete_Click" Background="{DynamicResource DangerBrush}" Width="100"/>
         </StackPanel>
 
         <DataGrid Grid.Row="2" x:Name="DishesGrid" AutoGenerateColumns="False" IsReadOnly="False" 

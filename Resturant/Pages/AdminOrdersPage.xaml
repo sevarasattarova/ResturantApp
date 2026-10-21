@@ -15,13 +15,13 @@
                    Foreground="{DynamicResource ForegroundBrush}" Margin="0,0,0,15"/>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,15">
-            <Button Content="Удалить заказ" Click="BtnDelete_Click" Background="#D9534F" Width="120" Height="35"/>
-            <Button Content="Сохранить" Click="BtnSave_Click" Background="#0275D8" Width="100" Height="35" Margin="10,0,0,0"/>
-            <Button Content="Обновить" Click="BtnRefresh_Click" Background="#5BC0DE" Width="100" Height="35" Margin="10,0,20,0"/>
+            <Button Content="Удалить заказ" Click="BtnDelete_Click" Background="{DynamicResource DangerBrush}" Width="120"/>
+            <Button Content="Сохранить" Click="BtnSave_Click"  Width="100" Height="35" Margin="10,0,0,0"/>
+            <Button Content="Обновить" Click="BtnRefresh_Click"  Width="100" Height="35" Margin="10,0,20,0"/>
 
-            <Button Content="В Excel" Click="BtnExportExcel_Click" Background="#217346" Width="100" Height="35" ToolTip="Экспорт текущего списка в .xlsx"/>
-            <Button Content="В Word" Click="BtnExportWord_Click" Background="#2B579A" Width="100" Height="35" Margin="10,0" ToolTip="Экспорт текущего списка в .docx"/>
-            <Button Content="В PDF" Click="BtnExportPdf_Click" Background="#D9534F" Width="100" Height="35" ToolTip="Экспорт текущего списка в .pdf"/>
+            <Button Content="В Excel" Click="BtnExportExcel_Click" Background="{DynamicResource SuccessBrush}" Width="100" Height="35" ToolTip="Экспорт текущего списка в .xlsx"/>
+            <Button Content="В Word" Click="BtnExportWord_Click"  Width="100" Height="35" Margin="10,0" ToolTip="Экспорт текущего списка в .docx"/>
+            <Button Content="В PDF" Click="BtnExportPdf_Click" Background="{DynamicResource DangerBrush}" Width="100" Height="35" ToolTip="Экспорт текущего списка в .pdf"/>
         </StackPanel>
 
         <DataGrid Grid.Row="2" x:Name="OrdersGrid" AutoGenerateColumns="False" IsReadOnly="False" 

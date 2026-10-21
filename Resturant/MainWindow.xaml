@@ -29,9 +29,9 @@
             <Button Content="Пользователи" Command="{Binding GoToUsersCommand}" Margin="10,5,10,5"
                 Visibility="{Binding IsAdmin, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
-            <Button Content="Сменить тему" Command="{Binding ToggleThemeCommand}" Margin="10,20,10,5" Background="Violet"/>
-            <Button Content="Сменить пароль" Click="BtnChangePassword_Click" Margin="10,5,10,5" Background="MediumVioletRed"/>
-            <Button Content="Выйти" Command="{Binding LogoutCommand}" Margin="10,5,10,5" Background="DarkViolet"/>
+            <Button Content="Сменить тему" Command="{Binding ToggleThemeCommand}" Margin="10,20,10,5" />
+            <Button Content="Сменить пароль" Click="BtnChangePassword_Click" Margin="10,5,10,5" />
+            <Button Content="Выйти" Command="{Binding LogoutCommand}" Margin="10,5,10,5" />
         </StackPanel>
 
         <Frame Grid.Column="1" x:Name="MainFrame" 

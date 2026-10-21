@@ -9,19 +9,16 @@ namespace Resturant
         {
             InitializeComponent();
 
-            // Устанавливаем DataContext. 
-            // Это связывает наш XAML (кнопки, Frame) с логикой в MainViewModel.
+           
             DataContext = new MainViewModel();
         }
 
-        // Обработчик закрытия окна (требование п. 9: подтверждение выхода)
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            // Если пользователь еще не авторизован (находится на экране входа), 
-            // можно просто закрыть окно без лишних вопросов, либо спросить.
+            
             if (Resturant.Services.AuthService.CurrentUser == null)
             {
-                return; // Закрываем без вопросов
+                return; 
             }
 
             var result = MessageBox.Show("Вы действительно хотите выйти из системы?",
@@ -31,7 +28,7 @@ namespace Resturant
 
             if (result == MessageBoxResult.No)
             {
-                e.Cancel = true; // Отменяем закрытие окна
+                e.Cancel = true; 
             }
         }
 
