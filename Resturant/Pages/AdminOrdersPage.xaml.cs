@@ -32,7 +32,6 @@ namespace Resturant.Pages
         {
             InitializeComponent();
 
-            // Загружаем данные и строим график только после того, как страница отрисовалась
             this.Loaded += (s, e) => LoadData();
         }
 
@@ -185,7 +184,6 @@ namespace Resturant.Pages
             }
         }
 
-        // ================= ЭКСПОРТ =================
 
         private void BtnExportExcel_Click(object sender, RoutedEventArgs e)
         {

@@ -45,7 +45,7 @@ namespace Resturant.ViewModels
             {
                 var currentBg = Application.Current.Resources["BackgroundBrush"] as SolidColorBrush;
 
-                // Если сейчас светлая тема (цвет #F0F0F0) - включаем темную
+                //если сейчас светлая тема - включаем темную
                 if (currentBg != null && currentBg.Color == (Color)ColorConverter.ConvertFromString("#F0F0F0"))
                 {
                     Application.Current.Resources["BackgroundBrush"] = new SolidColorBrush(Color.FromRgb(45, 45, 48));
@@ -53,7 +53,7 @@ namespace Resturant.ViewModels
 
                     if (AuthService.CurrentUser != null)
                     {
-                        AuthService.CurrentUser.AppTheme = "Dark"; // Обновляем в памяти
+                        AuthService.CurrentUser.AppTheme = "Dark"; 
 
                         using (var context = new RestaurantDBEntities())
                         {
@@ -62,14 +62,14 @@ namespace Resturant.ViewModels
                         }
                     }
                 }
-                else // Если темная - включаем светлую
+                else //если темная - включаем светлую
                 {
                     Application.Current.Resources["BackgroundBrush"] = new SolidColorBrush(Color.FromRgb(240, 240, 240));
                     Application.Current.Resources["ForegroundBrush"] = new SolidColorBrush(Color.FromRgb(51, 51, 51));
 
                     if (AuthService.CurrentUser != null)
                     {
-                        AuthService.CurrentUser.AppTheme = "Light"; // Обновляем в памяти
+                        AuthService.CurrentUser.AppTheme = "Light"; 
 
                         using (var context = new RestaurantDBEntities())
                         {

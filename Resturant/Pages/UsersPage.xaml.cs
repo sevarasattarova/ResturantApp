@@ -39,9 +39,9 @@ namespace Resturant.Pages
                 {
                     var newUser = new Users
                     {
-                        Login = "user_" + DateTime.Now.Ticks.ToString().Substring(10), // Уникальный логин
+                        Login = "user_" + DateTime.Now.Ticks.ToString().Substring(10),
                         FullName = "Новый пользователь",
-                        Role = "Работник", // <-- Сменили на Работника
+                        Role = "Работник", 
                         Phone = "+70000000000",
                         PasswordHash = Services.AuthService.HashPassword("123456"),
                         FailedAttempts = 0,
@@ -61,7 +61,7 @@ namespace Resturant.Pages
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
-            // Фиксируем ввод в таблице, чтобы данные попали в объекты
+            //фиксируем ввод в таблице, чтобы данные попали в объекты
             UsersGrid.CommitEdit(DataGridEditingUnit.Row, true);
             UsersGrid.CommitEdit(DataGridEditingUnit.Cell, true);
 
@@ -74,20 +74,18 @@ namespace Resturant.Pages
                     {
                         foreach (var user in users)
                         {
-                            // Внутри цикла foreach (var user in users)
                             if (string.IsNullOrWhiteSpace(user.Role))
                             {
                                 MessageBox.Show($"У пользователя {user.FullName} не выбрана роль! Выберите роль из списка.", "Ошибка");
-                                return; // Останавливаем сохранение
+                                return; 
                             }
                             var dbUser = context.Users.Find(user.UserId);
                             if (dbUser != null)
                             {
-                                // Проверка на уникальность логина
                                 if (context.Users.Any(u => u.Login == user.Login && u.UserId != user.UserId))
                                 {
                                     MessageBox.Show($"Логин '{user.Login}' уже занят другим пользователем!", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-                                    return; // Прерываем сохранение
+                                    return; 
                                 }
 
                                 dbUser.FullName = user.FullName;
@@ -104,7 +102,6 @@ namespace Resturant.Pages
             }
             catch (System.Data.Entity.Infrastructure.DbUpdateException ex)
             {
-                // ВЫТАСКИВАЕМ РЕАЛЬНУЮ ОШИБКУ ИЗ БАЗЫ
                 string realError = ex.InnerException?.InnerException?.Message ?? ex.InnerException?.Message ?? ex.Message;
                 MessageBox.Show("ОШИБКА БАЗЫ ДАННЫХ:\n\n" + realError, "Сбой сохранения", MessageBoxButton.OK, MessageBoxImage.Error);
             }

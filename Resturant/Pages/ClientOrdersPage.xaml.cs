@@ -22,7 +22,6 @@ namespace Resturant.Pages
 
                 var orderItems = context.OrderItems.ToList();
 
-                // ЛОГИКА: Если Повар или Админ - видит ВСЕ заказы. Если Официант - только СВОИ.
                 var orders = (currentRole == "Повар" || currentRole == "Администратор")
                     ? context.Orders.ToList()
                     : context.Orders.Where(o => o.UserId == currentUserId).ToList();

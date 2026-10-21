@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel; // Для ICollectionView
+using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;   // Для CollectionViewSource
+using System.Windows.Data; 
 
 namespace Resturant.Pages
 {
@@ -20,8 +20,7 @@ namespace Resturant.Pages
     public partial class DishesPage : Page
     {
         private List<CartItem> _cart = new List<CartItem>();
-        private ICollectionView _dishesView; // Переменная для фильтрации
-
+        private ICollectionView _dishesView; 
         public DishesPage()
         {
             InitializeComponent();
@@ -36,18 +35,18 @@ namespace Resturant.Pages
                 {
                     var dishes = context.Dishes.Where(d => d.IsAvailable).ToList();
 
-                    // Настраиваем фильтрацию
+                    //настраиваем фильтрацию
                     _dishesView = CollectionViewSource.GetDefaultView(dishes);
                     _dishesView.Filter = FilterDishes;
                     DishesGrid.ItemsSource = _dishesView;
 
-                    // Заполняем ComboBox категориями
+                    //заполняем ComboBox категориями
                     var categories = dishes.Select(d => d.Category).Distinct().ToList();
                     categories.Insert(0, "Все категории");
                     CmbCategory.ItemsSource = categories;
                     CmbCategory.SelectedIndex = 0;
 
-                    // Загружаем столики
+                    //загружаем столики
                     CmbTables.ItemsSource = context.Tables.ToList();
                     if (CmbTables.Items.Count > 0) CmbTables.SelectedIndex = 0;
                 }
@@ -58,7 +57,6 @@ namespace Resturant.Pages
             }
         }
 
-        // Логика фильтрации (поиск + категория)
         private bool FilterDishes(object item)
         {
             var dish = item as Dishes;
@@ -76,7 +74,6 @@ namespace Resturant.Pages
             return matchesSearch && matchesCategory;
         }
 
-        // Обработчики для фильтрации
         private void TxtSearch_TextChanged(object sender, TextChangedEventArgs e)
         {
             _dishesView?.Refresh();
@@ -87,7 +84,7 @@ namespace Resturant.Pages
             _dishesView?.Refresh();
         }
 
-        // Добавление в корзину
+        //добавление в корзину
         private void BtnAddToCart_Click(object sender, RoutedEventArgs e)
         {
             var selectedDish = DishesGrid.SelectedItem as Dishes;
@@ -119,7 +116,7 @@ namespace Resturant.Pages
             TxtTotalSum.Text = $"{_cart.Sum(c => c.Total):N2} р.";
         }
 
-        // Оформление заказа
+        //оформление заказа
         private void BtnCheckout_Click(object sender, RoutedEventArgs e)
         {
             if (_cart.Count == 0) { MessageBox.Show("Корзина пуста!"); return; }

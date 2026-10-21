@@ -34,7 +34,7 @@ namespace Resturant.Pages
                 return;
             }
 
-            // Вызов метода авторизации
+            //ыызов метода авторизации
             var result = Services.AuthService.Login(login, password, TxtCaptchaInput.Text, _currentCaptcha);
 
             if (result.Success)

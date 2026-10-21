@@ -9,7 +9,7 @@ namespace Resturant.Services
     {
         public static Users CurrentUser { get; set; }
 
-        // 1. Отдельный метод хэширования
+        //отдельный метод хэширования
         public static string HashPassword(string password)
         {
             using (var sha256 = SHA256.Create())
@@ -19,7 +19,7 @@ namespace Resturant.Services
             }
         }
 
-        // 2. Отдельный метод генерации капчи
+        //отдельный метод генерации капчи
         public static string GenerateCaptcha()
         {
             Random rnd = new Random();
@@ -27,7 +27,7 @@ namespace Resturant.Services
             return new string(Enumerable.Repeat(chars, 5).Select(s => s[rnd.Next(s.Length)]).ToArray());
         }
 
-        // 3. Отдельный метод аутентификации (и проверки попыток)
+        //отдельный метод аутентификации (и проверки попыток)
         public static (bool Success, string Message, bool NeedCaptcha) Login(string login, string password, string enteredCaptcha, string actualCaptcha)
         {
             using (var context = new RestaurantDBEntities())
@@ -35,13 +35,12 @@ namespace Resturant.Services
                 var user = context.Users.FirstOrDefault(u => u.Login == login);
                 if (user == null) return (false, "Пользователь не найден", false);
 
-                // Проверка на блокировку/капчу
                 if (user.FailedAttempts >= 3 && enteredCaptcha != actualCaptcha)
                     return (false, "Неверная капча!", true);
 
                 if (user.PasswordHash == HashPassword(password))
                 {
-                    user.FailedAttempts = 0; // Сброс попыток при успехе
+                    user.FailedAttempts = 0; 
                     context.SaveChanges();
                     CurrentUser = user;
                     return (true, "Успех", false);

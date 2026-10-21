@@ -6,19 +6,14 @@
     <Grid Margin="20">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <!-- 0. Заголовок -->
             <RowDefinition Height="Auto"/>
-            <!-- 1. Кнопки -->
             <RowDefinition Height="*"/>
-            <!-- 2. Таблица (занимает основное место) -->
             
         </Grid.RowDefinitions>
 
-        <!-- Заголовок страницы -->
         <TextBlock Grid.Row="0" Text="Все заказы ресторана" FontSize="24" FontWeight="Bold" 
                    Foreground="{DynamicResource ForegroundBrush}" Margin="0,0,0,15"/>
 
-        <!-- Панель с кнопками управления -->
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,15">
             <Button Content="Удалить заказ" Click="BtnDelete_Click" Background="#D9534F" Width="120" Height="35"/>
             <Button Content="Сохранить" Click="BtnSave_Click" Background="#0275D8" Width="100" Height="35" Margin="10,0,0,0"/>
@@ -29,7 +24,6 @@
             <Button Content="В PDF" Click="BtnExportPdf_Click" Background="#D9534F" Width="100" Height="35" ToolTip="Экспорт текущего списка в .pdf"/>
         </StackPanel>
 
-        <!-- Таблица заказов -->
         <DataGrid Grid.Row="2" x:Name="OrdersGrid" AutoGenerateColumns="False" IsReadOnly="False" 
                   CanUserAddRows="False" Background="White" AlternatingRowBackground="#F9F9F9"
                   CellEditEnding="OrdersGrid_CellEditEnding">

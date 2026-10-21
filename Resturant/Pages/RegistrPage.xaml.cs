@@ -16,8 +16,7 @@ namespace Resturant.Pages
         {
             var fullName = TxtFullName.Text.Trim();
             var login = TxtLogin.Text.Trim();
-            // ВНИМАНИЕ: Убедитесь, что в XAML у вас есть TextBox с именем TxtPhone!
-            // Если он называется иначе (например, TxtPhoneNumber), поменяйте здесь.
+            
             var phone = TxtPhone != null ? TxtPhone.Text.Trim() : "";
             var password = TxtPassword.Password;
             var confirmPassword = TxtPasswordConfirm.Password;
@@ -56,11 +55,11 @@ namespace Resturant.Pages
                     Login = login,
                     FullName = fullName,
                     Phone = phone,
-                    Role = "Работник", // По умолчанию
+                    Role = "Работник", 
                     PasswordHash = AuthService.HashPassword(password),
                     FailedAttempts = 0,
                     AppTheme = "Light",
-                    CreatedAt = System.DateTime.Now // Обязательно!
+                    CreatedAt = System.DateTime.Now 
                 };
 
                 context.Users.Add(newUser);

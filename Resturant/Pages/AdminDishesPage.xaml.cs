@@ -84,7 +84,7 @@ namespace Resturant.Pages
             {
                 using (var context = new RestaurantDBEntities())
                 {
-                    // 1. Проверяем, заказывали ли это блюдо хоть раз
+                    //проверяем, заказывали ли это блюдо хоть раз
                     bool isOrdered = context.OrderItems.Any(oi => oi.DishId == selectedDish.DishId);
 
                     if (isOrdered)
@@ -95,7 +95,7 @@ namespace Resturant.Pages
                         return;
                     }
 
-                    // 2. Если блюдо не заказывали, удаляем
+                    //если блюдо не заказывали, удаляем
                     if (MessageBox.Show($"Удалить блюдо {selectedDish.Name}?", "Подтверждение", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
                     {
                         var dish = context.Dishes.Find(selectedDish.DishId);
