@@ -17,10 +17,6 @@
             <SolidColorBrush x:Key="DarkGreenBrush" Color="#256569"/>
             <SolidColorBrush x:Key="GrayBrush" Color="#9197A3"/>
 
-
-
-
-
             <SolidColorBrush x:Key="BackgroundBrush" Color="#F3F3F3"/>
 
             <SolidColorBrush x:Key="ForegroundBrush" Color="#193D57"/>
