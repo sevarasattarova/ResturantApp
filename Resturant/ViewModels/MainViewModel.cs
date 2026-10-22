@@ -48,9 +48,9 @@ namespace Resturant.ViewModels
                 //если сейчас светлая тема - включаем темную
                 if (currentBg != null && currentBg.Color == (Color)ColorConverter.ConvertFromString("#F3F3F3"))
                 {
-                    Application.Current.Resources["BackgroundBrush"] = new SolidColorBrush(Color.FromRgb(25, 61, 87)); // #193D57
+                    Application.Current.Resources["BackgroundBrush"] = new SolidColorBrush(Color.FromRgb(25, 61, 87));  // #193D57 Темно-синий фон
+                    Application.Current.Resources["MainBgBrush"] = new SolidColorBrush(Color.FromRgb(35, 62, 118));     // #233E76 Цвет чередующихся строк
                     Application.Current.Resources["ForegroundBrush"] = new SolidColorBrush(Colors.White);
-
                     if (AuthService.CurrentUser != null)
                     {
                         AuthService.CurrentUser.AppTheme = "Dark"; 
@@ -64,9 +64,9 @@ namespace Resturant.ViewModels
                 }
                 else //если темная - включаем светлую
                 {
-                    Application.Current.Resources["BackgroundBrush"] = new SolidColorBrush(Color.FromRgb(243, 243, 243)); // #F3F3F3
-                    Application.Current.Resources["ForegroundBrush"] = new SolidColorBrush(Color.FromRgb(25, 61, 87)); // #193D57
-
+                    Application.Current.Resources["BackgroundBrush"] = new SolidColorBrush(Color.FromRgb(243, 243, 243)); // #F3F3F3 Светло-серый фон
+                    Application.Current.Resources["MainBgBrush"] = new SolidColorBrush(Color.FromRgb(230, 230, 230));     // #E6E6E6 Цвет чередующихся строк (чуть темнее)
+                    Application.Current.Resources["ForegroundBrush"] = new SolidColorBrush(Color.FromRgb(25, 61, 87));
                     if (AuthService.CurrentUser != null)
                     {
                         AuthService.CurrentUser.AppTheme = "Light"; 

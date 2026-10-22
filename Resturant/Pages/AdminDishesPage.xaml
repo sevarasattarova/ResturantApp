@@ -13,12 +13,12 @@
 
         <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,0,0,10">
             <Button Content="Добавить блюдо" Click="BtnAdd_Click" Background="{DynamicResource SuccessBrush}" Width="130"/>
-            <Button Content="Сохранить изменения" Click="BtnSave_Click" Background="#0275D8" Width="150" Margin="10,0"/>
+            <Button Content="Сохранить изменения" Click="BtnSave_Click"  Width="150" Margin="10,0"/>
             <Button Content="Удалить" Click="BtnDelete_Click" Background="{DynamicResource DangerBrush}" Width="100"/>
         </StackPanel>
 
         <DataGrid Grid.Row="2" x:Name="DishesGrid" AutoGenerateColumns="False" IsReadOnly="False" 
-          CanUserAddRows="False" Background="White">
+          CanUserAddRows="False" >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="№" Binding="{Binding DishId}" IsReadOnly="True" Width="50"/>
                 <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="150"/>

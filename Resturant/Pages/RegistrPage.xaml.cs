@@ -55,7 +55,7 @@ namespace Resturant.Pages
                     Login = login,
                     FullName = fullName,
                     Phone = phone,
-                    Role = "Работник", 
+                    Role = "Официант", 
                     PasswordHash = AuthService.HashPassword(password),
                     FailedAttempts = 0,
                     AppTheme = "Light",

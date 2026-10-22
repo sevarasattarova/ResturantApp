@@ -11,7 +11,7 @@
         <TextBlock Text="История моих заказов" FontSize="24" FontWeight="Bold" Foreground="{DynamicResource ForegroundBrush}" Margin="0,0,0,15"/>
 
         <DataGrid Grid.Row="1" x:Name="OrdersGrid" AutoGenerateColumns="False" IsReadOnly="True" 
-                  CanUserAddRows="False" Background="White">
+                  CanUserAddRows="False" >
             <DataGrid.Columns>
                 <DataGridTextColumn Header="№ Заказа" Binding="{Binding OrderId}" Width="80"/>
                 <DataGridTextColumn Header="Столик" Binding="{Binding TableNumber}" Width="80"/>

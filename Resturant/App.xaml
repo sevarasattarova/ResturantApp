@@ -37,17 +37,41 @@
                 <Setter Property="Cursor" Value="Hand"/>
             </Style>
 
-            <Style TargetType="TextBlock">
-                <Setter Property="FontFamily" Value="{StaticResource MainFont}"/>
+            <Style TargetType="DataGrid">
+                <Setter Property="Background" Value="{DynamicResource BackgroundBrush}"/>
                 <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
+                <Setter Property="RowBackground" Value="{DynamicResource BackgroundBrush}"/>
+                <Setter Property="AlternatingRowBackground" Value="{DynamicResource MainBgBrush}"/>
+                <Setter Property="GridLinesVisibility" Value="All"/>
+                <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource GrayBrush}"/>
+                <Setter Property="VerticalGridLinesBrush" Value="{DynamicResource GrayBrush}"/>
             </Style>
             <Style TargetType="TextBox">
                 <Setter Property="FontFamily" Value="{StaticResource MainFont}"/>
                 <Setter Property="Height" Value="30"/>
                 <Setter Property="Margin" Value="0,5,0,10"/>
+                <Setter Property="Background" Value="{DynamicResource BackgroundBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
             </Style>
             <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
-
+            <Style TargetType="DataGridColumnHeader">
+                <Setter Property="Background" Value="{DynamicResource ButtonBrush}"/>
+                <Setter Property="Foreground" Value="{DynamicResource ButtonTextBrush}"/>
+                <Setter Property="FontFamily" Value="{StaticResource MainFont}"/>
+                <Setter Property="FontWeight" Value="Bold"/>
+                <Setter Property="Padding" Value="5"/>
+                <Setter Property="BorderBrush" Value="{DynamicResource GrayBrush}"/>
+                <Setter Property="BorderThickness" Value="1"/>
+            </Style>
+            <Style TargetType="DataGridCell">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Foreground" Value="{DynamicResource ForegroundBrush}"/>
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Padding" Value="5"/>
+            </Style>
+            
+            
+            
         </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -68,18 +68,21 @@ namespace Resturant.Pages
 
         private void ApplySavedTheme()
         {
-            if (Services.AuthService.CurrentUser != null && Services.AuthService.CurrentUser.AppTheme == "Dark")
+            if (Services.AuthService.CurrentUser == null) return;
+
+            if (Services.AuthService.CurrentUser.AppTheme == "Dark")
             {
-                Application.Current.Resources["BackgroundBrush"] = new SolidColorBrush(Color.FromRgb(45, 45, 48));
-                Application.Current.Resources["ForegroundBrush"] = new SolidColorBrush(Colors.White);
+                Application.Current.Resources["BackgroundBrush"] = new SolidColorBrush(Color.FromRgb(25, 61, 87));  
+                Application.Current.Resources["MainBgBrush"] = new SolidColorBrush(Color.FromRgb(35, 62, 118));     
+                Application.Current.Resources["ForegroundBrush"] = new SolidColorBrush(Colors.White);               
             }
             else
             {
-                Application.Current.Resources["BackgroundBrush"] = new SolidColorBrush(Color.FromRgb(240, 240, 240));
-                Application.Current.Resources["ForegroundBrush"] = new SolidColorBrush(Color.FromRgb(51, 51, 51));
+                Application.Current.Resources["BackgroundBrush"] = new SolidColorBrush(Color.FromRgb(243, 243, 243)); 
+                Application.Current.Resources["MainBgBrush"] = new SolidColorBrush(Color.FromRgb(230, 230, 230));     
+                Application.Current.Resources["ForegroundBrush"] = new SolidColorBrush(Color.FromRgb(25, 61, 87));   
             }
         }
-
         private void BtnGoToRegister_Click(object sender, RoutedEventArgs e)
         {
             NavigationService.Navigate(new RegisterPage());

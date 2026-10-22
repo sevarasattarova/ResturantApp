@@ -41,7 +41,7 @@ namespace Resturant.Pages
                     {
                         Login = "user_" + DateTime.Now.Ticks.ToString().Substring(10),
                         FullName = "Новый пользователь",
-                        Role = "Работник", 
+                        Role = "Официант",
                         Phone = "+70000000000",
                         PasswordHash = Services.AuthService.HashPassword("123456"),
                         FailedAttempts = 0,

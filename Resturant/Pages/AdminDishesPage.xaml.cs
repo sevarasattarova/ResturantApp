@@ -59,7 +59,7 @@ namespace Resturant.Pages
                                 dbDish.Name = dish.Name;
                                 dbDish.Category = dish.Category;
                                 dbDish.Price = dish.Price;
-                                dbDish.Description = dish.Description; // ВОТ ОНА! Сохраняем описание
+                                dbDish.Description = dish.Description; 
                                 dbDish.IsAvailable = dish.IsAvailable;
                             }
                         }

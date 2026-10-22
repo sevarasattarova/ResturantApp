@@ -20,7 +20,7 @@
             </StackPanel>
 
             <Button Content="Войти" Click="BtnLogin_Click" Width="200" Height="40" Margin="0,20,0,10"/>
-            <Button Content="Зарегистрироваться" Click="BtnGoToRegister_Click" Width="200" Height="40" 
+            <Button Content="Зарегистрироваться" Click="BtnGoToRegister_Click" Width="200" Height="40" Margin="0,20,0,10"
                     Background="Transparent" Foreground="{DynamicResource ForegroundBrush}" BorderBrush="Gray"/>
 
             <TextBlock x:Name="TxtError" Foreground="{DynamicResource DangerBrush}" HorizontalAlignment="Center" Margin="0,15,0,0" TextWrapping="Wrap" TextAlignment="Center"/>
